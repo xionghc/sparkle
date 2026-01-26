@@ -41,14 +41,6 @@ struct MainView: View {
         .navigationTitle("VBCode")
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
-                Button {
-                    recordingManager.startRecording()
-                    openWindow(id: "recording-widget")
-                } label: {
-                    Label("Record", systemImage: "record.circle")
-                }
-                .disabled(recordingManager.isRecording || recordingManager.isProcessing)
-
                 SettingsLink {
                     Label("Settings", systemImage: "gear")
                 }

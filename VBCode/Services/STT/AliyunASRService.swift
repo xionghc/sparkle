@@ -29,12 +29,7 @@ final class AliyunASRService: STTServiceProtocol {
             throw STTError.invalidAPIKey
         }
 
-        // Read audio file
-        guard let audioData = try? Data(contentsOf: audioURL) else {
-            throw STTError.fileReadError
-        }
-
-        // Convert audio to PCM format if needed
+        // Convert audio to PCM format
         let pcmData = try await convertToPCM(audioURL: audioURL)
 
         // Transcribe using WebSocket
