@@ -16,7 +16,7 @@ struct HistoryView: View {
     private var recordings: [Recording]
 
     @Binding var selection: Recording?
-    @State private var searchText = ""
+    @Binding var searchText: String
 
     private var filteredRecordings: [Recording] {
         if searchText.isEmpty {
@@ -59,7 +59,6 @@ struct HistoryView: View {
             .onDelete(perform: deleteRecordings)
         }
         .listStyle(.sidebar)
-        .searchable(text: $searchText, prompt: "Search recordings")
         .overlay {
             if recordings.isEmpty {
                 ContentUnavailableView {
@@ -136,7 +135,7 @@ struct RecordingRowView: View {
 }
 
 #Preview {
-    HistoryView(selection: .constant(nil))
+    HistoryView(selection: .constant(nil), searchText: .constant(""))
         .environmentObject(RecordingManager())
         .modelContainer(for: Recording.self, inMemory: true)
 }
