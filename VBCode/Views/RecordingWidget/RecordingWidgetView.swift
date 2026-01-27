@@ -128,7 +128,7 @@ struct RecordingWidgetView: View {
     // MARK: - Completed State
 
     private var completedContent: some View {
-        EmptyView()
+        Color.clear
             .onAppear {
                 recordingManager.resetToIdle()
                 dismiss()
