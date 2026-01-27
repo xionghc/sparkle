@@ -77,12 +77,12 @@ struct RecordingWidgetView: View {
 
             ZStack(alignment: .leading) {
                 // Background track (light gray for incomplete)
-                RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                Rectangle()
                     .fill(Color.white.opacity(0.2))
 
                 // Progress fill (white for completed)
                 if progressWidth > 0 {
-                    RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                    Rectangle()
                         .fill(Color.white.opacity(0.4))
                         .frame(width: progressWidth)
                 }
