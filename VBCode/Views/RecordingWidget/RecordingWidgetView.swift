@@ -8,8 +8,8 @@
 import SwiftUI
 
 // Fixed widget dimensions for consistency
-private let widgetWidth: CGFloat = 140
-private let widgetHeight: CGFloat = 36
+private let widgetWidth: CGFloat = 120
+private let widgetHeight: CGFloat = 32
 
 struct RecordingWidgetView: View {
     @EnvironmentObject private var recordingManager: RecordingManager
@@ -105,7 +105,7 @@ struct RecordingWidgetView: View {
 
             // Animated waveform indicator - centered
             WaveformIndicator(amplitude: recordingManager.currentAmplitude)
-                .frame(width: 48, height: 14)
+                .frame(width: 40, height: 12)
 
             if recordingManager.isHandsFreeMode {
                 // Complete button
@@ -121,28 +121,18 @@ struct RecordingWidgetView: View {
 
     private var processingContent: some View {
         Text("Thinking...")
-            .font(.system(size: 14, weight: .medium))
+            .font(.system(size: 12, weight: .medium))
             .foregroundStyle(.white)
     }
 
     // MARK: - Completed State
 
     private var completedContent: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 12))
-                .foregroundStyle(.green)
-
-            Text("Done")
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white)
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        EmptyView()
+            .onAppear {
                 recordingManager.resetToIdle()
                 dismiss()
             }
-        }
     }
 
     // MARK: - Failed State
@@ -154,7 +144,7 @@ struct RecordingWidgetView: View {
                 .foregroundStyle(.red)
 
             Text("Failed")
-                .font(.system(size: 14, weight: .medium))
+                .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(.white)
         }
         .onAppear {
@@ -169,7 +159,7 @@ struct RecordingWidgetView: View {
 
     private var idleContent: some View {
         Text("Ready")
-            .font(.system(size: 14, weight: .medium))
+            .font(.system(size: 12, weight: .medium))
             .foregroundStyle(.white.opacity(0.6))
     }
 }
@@ -184,9 +174,9 @@ struct CircleButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: systemName)
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: 9, weight: .semibold))
                 .foregroundStyle(isPrimary ? .white : .white.opacity(0.7))
-                .frame(width: 24, height: 24)
+                .frame(width: 20, height: 20)
                 .background(
                     Circle()
                         .stroke(.white.opacity(isPrimary ? 0.6 : 0.3), lineWidth: 1.5)
@@ -256,10 +246,10 @@ struct WaveBar: View {
     let index: Int
     let totalBars: Int
 
-    @State private var animatedHeight: CGFloat = 3
+    @State private var animatedHeight: CGFloat = 2
 
-    private let minHeight: CGFloat = 3
-    private let maxHeight: CGFloat = 14
+    private let minHeight: CGFloat = 2
+    private let maxHeight: CGFloat = 12
 
     // Create a wave pattern - middle bars are taller
     private var heightMultiplier: CGFloat {
