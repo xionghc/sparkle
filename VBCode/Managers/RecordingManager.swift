@@ -161,14 +161,16 @@ final class RecordingManager: ObservableObject {
                 processingProgress = 0.5
 
                 // Step 2: Polish with LLM (50-100% progress)
-                if settings.isLLMConfigured {
+                // Skip LLM call if transcript is empty (no speech detected)
+                let trimmedTranscript = transcript.trimmingCharacters(in: .whitespacesAndNewlines)
+                if settings.isLLMConfigured && !trimmedTranscript.isEmpty {
                     processingProgress = 0.6
 
                     let polished = try await llmService.polish(transcript: transcript)
                     recording.polishedText = polished
                     processingProgress = 0.9
                 } else {
-                    // No LLM configured, use original transcript
+                    // No LLM configured or empty transcript, use original
                     recording.polishedText = transcript
                 }
 
