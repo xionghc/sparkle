@@ -22,6 +22,7 @@ enum SidebarTab: String, CaseIterable {
 struct SidebarView: View {
     @Binding var selection: Recording?
     @State private var selectedTab: SidebarTab = .home
+    @State private var showAccountPopover = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -57,12 +58,16 @@ struct SidebarView: View {
 
             Divider()
 
-            // Settings Button at Bottom
-            SettingsLink {
+            // Account Button at Bottom
+            Button {
+                showAccountPopover.toggle()
+            } label: {
                 HStack {
-                    Image(systemName: "gear")
-                    Text("Settings")
+                    Image(systemName: "person.circle.fill")
+                    Text("我的账号")
                     Spacer()
+                    Image(systemName: "chevron.up")
+                        .font(.caption)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
@@ -70,6 +75,9 @@ struct SidebarView: View {
             }
             .buttonStyle(.plain)
             .foregroundStyle(.primary)
+            .popover(isPresented: $showAccountPopover, arrowEdge: .top) {
+                AccountMenuView(showPopover: $showAccountPopover)
+            }
         }
     }
 }

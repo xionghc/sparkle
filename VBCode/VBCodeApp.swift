@@ -67,10 +67,12 @@ struct VBCodeApp: App {
 
         // Settings window
         #if os(macOS)
-        Settings {
-            SettingsView()
+        Window("Setting", id: "settings-window") {
+            SettingsWindowView()
                 .environmentObject(recordingManager)
         }
+        .windowResizability(.contentSize)
+        .defaultSize(width: 700, height: 500)
         #endif
     }
 }

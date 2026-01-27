@@ -92,7 +92,10 @@ struct MenuBarView: View {
             }
             .keyboardShortcut("h", modifiers: [.command])
 
-            SettingsLink {
+            Button {
+                NSApp.activate(ignoringOtherApps: true)
+                openWindow(id: "settings-window")
+            } label: {
                 HStack {
                     Text("Settings...")
                     Spacer()
