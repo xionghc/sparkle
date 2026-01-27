@@ -290,7 +290,7 @@ struct GeneralSettingsView: View {
                             .foregroundStyle(.orange)
                         Spacer()
                         Button("Authorize") {
-                            _ = ClipboardManager.shared.checkAccessibilityPermissions()
+                            _ = ClipboardManager.shared.checkAccessibilityPermissions(forcePrompt: true)
                         }
                         .buttonStyle(.bordered)
                     }

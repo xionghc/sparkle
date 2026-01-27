@@ -12,6 +12,9 @@ import Carbon.HIToolbox
 final class ClipboardManager {
     static let shared = ClipboardManager()
 
+    // Track if we've already prompted for accessibility permissions this session
+    private var hasPromptedForAccessibility = false
+
     private init() {}
 
     /// Copies text to the clipboard
@@ -39,14 +42,20 @@ final class ClipboardManager {
     }
 
     /// Checks if accessibility permissions are granted, prompts user if not
-    func checkAccessibilityPermissions() -> Bool {
+    /// - Parameter forcePrompt: If true, always show the prompt regardless of whether we've prompted before
+    func checkAccessibilityPermissions(forcePrompt: Bool = false) -> Bool {
         // Check if we already have accessibility permissions
         let trusted = AXIsProcessTrusted()
 
-        if !trusted {
+        if !trusted && (forcePrompt || !hasPromptedForAccessibility) {
             // Prompt the user to grant accessibility permissions
             let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
             AXIsProcessTrustedWithOptions(options)
+
+            if !forcePrompt {
+                hasPromptedForAccessibility = true
+                print("Accessibility permission required. Please grant permission in System Settings and restart the app.")
+            }
         }
 
         return trusted

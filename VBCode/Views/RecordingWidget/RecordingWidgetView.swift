@@ -81,12 +81,13 @@ struct RecordingWidgetView: View {
                     .fill(Color.white.opacity(0.2))
 
                 // Progress fill (white for completed)
-                RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
-                    .fill(Color.white.opacity(0.4))
-                    .frame(width: progressWidth)
+                if progressWidth > 0 {
+                    RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                        .fill(Color.white.opacity(0.4))
+                        .frame(width: progressWidth)
+                }
             }
         }
-        .frame(height: widgetHeight)
         .clipShape(RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous))
     }
 
