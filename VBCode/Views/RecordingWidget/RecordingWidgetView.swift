@@ -7,17 +7,36 @@
 
 import SwiftUI
 
+// Fixed widget dimensions for consistency
+private let widgetWidth: CGFloat = 140
+private let widgetHeight: CGFloat = 36
+
 struct RecordingWidgetView: View {
     @EnvironmentObject private var recordingManager: RecordingManager
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack(spacing: 8) {
-            // Main widget pill
-            widgetContent
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .modifier(DarkBackgroundModifier())
+            // Main widget pill with fixed size
+            ZStack {
+                // Background capsule with smooth anti-aliasing
+                RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                    .fill(Color.black.opacity(0.85))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                            .strokeBorder(.white.opacity(0.3), lineWidth: 1)
+                    )
+
+                // Content
+                widgetContent
+
+                // Progress bar overlay (only during processing)
+                if case .processing = recordingManager.state {
+                    progressBarOverlay
+                }
+            }
+            .frame(width: widgetWidth, height: widgetHeight)
+            .compositingGroup()
 
             // Error message below widget (if failed)
             if case .failed = recordingManager.state,
@@ -49,47 +68,60 @@ struct RecordingWidgetView: View {
         }
     }
 
+    // MARK: - Progress Bar Overlay
+
+    private var progressBarOverlay: some View {
+        GeometryReader { geometry in
+            let progress = recordingManager.processingProgress
+            let progressWidth = geometry.size.width * progress
+
+            ZStack(alignment: .leading) {
+                // Background track (light gray for incomplete)
+                RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                    .fill(Color.white.opacity(0.2))
+
+                // Progress fill (white for completed)
+                RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
+                    .fill(Color.white.opacity(0.4))
+                    .frame(width: progressWidth)
+            }
+        }
+        .frame(height: widgetHeight)
+        .clipShape(RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous))
+    }
+
     // MARK: - Recording State
 
     private var recordingContent: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             if recordingManager.isHandsFreeMode {
-                // Cancel button in circle
+                // Cancel button
                 CircleButton(systemName: "xmark", isPrimary: false) {
                     recordingManager.cancelRecording()
                     dismiss()
                 }
             }
 
-            // Animated waveform indicator with more bars
+            // Animated waveform indicator - centered
             WaveformIndicator(amplitude: recordingManager.currentAmplitude)
                 .frame(width: 48, height: 14)
 
-            Text("Recording")
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white)
-
             if recordingManager.isHandsFreeMode {
-                // Complete button in circle
+                // Complete button
                 CircleButton(systemName: "checkmark", isPrimary: true) {
                     recordingManager.stopRecording()
                 }
             }
         }
+        .padding(.horizontal, 6)
     }
 
     // MARK: - Processing State
 
     private var processingContent: some View {
-        HStack(spacing: 8) {
-            ProgressView()
-                .scaleEffect(0.7)
-                .tint(.white)
-
-            Text("Thinking")
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white)
-        }
+        Text("Thinking...")
+            .font(.system(size: 14, weight: .medium))
+            .foregroundStyle(.white)
     }
 
     // MARK: - Completed State
@@ -173,7 +205,6 @@ struct DarkBackgroundModifier: ViewModifier {
                         Capsule()
                             .stroke(.white.opacity(0.3), lineWidth: 1)
                     )
-                    .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 4)
             )
     }
 }
@@ -190,7 +221,6 @@ struct GlassBackgroundModifier: ViewModifier {
                 .background(
                     Capsule()
                         .fill(.ultraThinMaterial)
-                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 2)
                 )
         }
     }
