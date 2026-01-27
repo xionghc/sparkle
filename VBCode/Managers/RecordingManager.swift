@@ -301,10 +301,6 @@ final class RecordingManager: ObservableObject {
 
                 // Cleanup
                 cleanupPipeline()
-
-                // Reset to idle after brief delay
-                try? await Task.sleep(nanoseconds: 500_000_000)
-                state = .idle
                 currentRecording = nil
 
             } catch {
@@ -325,9 +321,6 @@ final class RecordingManager: ObservableObject {
 
                 state = .completed
                 cleanupPipeline()
-
-                try? await Task.sleep(nanoseconds: 500_000_000)
-                state = .idle
                 currentRecording = nil
             }
         }
@@ -358,6 +351,11 @@ final class RecordingManager: ObservableObject {
         currentRecording = nil
         state = .idle
         isHandsFreeMode = false
+    }
+
+    /// Reset state to idle (called when widget dismisses)
+    func resetToIdle() {
+        state = .idle
     }
 
     func toggleHandsFreeRecording() {
@@ -439,20 +437,12 @@ final class RecordingManager: ObservableObject {
                 }
 
                 state = .completed
-
-                // Reset to idle after a brief delay
-                try? await Task.sleep(nanoseconds: 500_000_000)
-                state = .idle
                 currentRecording = nil
 
             } catch {
                 recording.status = .failed
                 state = .failed(error)
                 errorMessage = error.localizedDescription
-
-                // Reset to idle after showing error
-                try? await Task.sleep(nanoseconds: 2_000_000_000)
-                state = .idle
                 currentRecording = nil
             }
         }

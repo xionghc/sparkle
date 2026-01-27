@@ -139,6 +139,7 @@ struct RecordingWidgetView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                recordingManager.resetToIdle()
                 dismiss()
             }
         }
@@ -158,6 +159,7 @@ struct RecordingWidgetView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                recordingManager.resetToIdle()
                 dismiss()
             }
         }
