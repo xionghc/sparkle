@@ -19,7 +19,7 @@ final class AliyunASRService: STTServiceProtocol {
     private let connectionTimeout: TimeInterval = 30
     private let transcriptionTimeout: TimeInterval = 120
 
-    init(apiKey: String, model: String = "paraformer-realtime-v2") {
+    init(apiKey: String, model: String = "fun-asr-realtime") {
         self.apiKey = apiKey
         self.model = model
     }
@@ -181,7 +181,8 @@ private class WebSocketTranscriptionSession: NSObject, URLSessionWebSocketDelega
                 "model": model,
                 "parameters": [
                     "format": "pcm",
-                    "sample_rate": 16000
+                    "sample_rate": 16000,
+                    "disfluency_removal_enabled": true
                 ],
                 "input": [:]
             ]
