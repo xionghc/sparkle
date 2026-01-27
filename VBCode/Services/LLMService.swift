@@ -14,6 +14,33 @@ final class LLMService {
         self.settings = settings
     }
 
+    /// Polish with accumulated sentences from streaming STT
+    /// Collects all sentences until isComplete, then processes with LLM
+    func polishWithAccumulation(
+        sentences: AsyncThrowingStream<STTPartialResult, Error>
+    ) async throws -> String {
+        var fullTranscript = ""
+
+        // Collect all sentences until completion
+        for try await partial in sentences {
+            if partial.isComplete { break }
+            if !partial.text.isEmpty {
+                if !fullTranscript.isEmpty {
+                    fullTranscript += " "
+                }
+                fullTranscript += partial.text
+            }
+        }
+
+        // Handle empty transcript
+        let trimmedTranscript = fullTranscript.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedTranscript.isEmpty else {
+            return fullTranscript
+        }
+
+        return try await polish(transcript: fullTranscript)
+    }
+
     func polish(transcript: String) async throws -> String {
         guard let url = URL(string: settings.llmAPIURL) else {
             throw LLMError.invalidURL

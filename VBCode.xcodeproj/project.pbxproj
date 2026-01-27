@@ -41,6 +41,7 @@
 		027 /* RecordingStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129; };
 		028 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130; };
 		029 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131; };
+		036 /* RealtimeAudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		129 /* RecordingStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingStatistics.swift; sourceTree = "<group>"; };
 		130 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		131 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		138 /* RealtimeAudioCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeAudioCapture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 				105 /* AudioRecorder.swift */,
 				106 /* HotkeyManager.swift */,
 				113 /* LLMService.swift */,
+				138 /* RealtimeAudioCapture.swift */,
 				127 /* SoundManager.swift */,
 				137 /* APITester.swift */,
 				309 /* STT */,
@@ -316,6 +319,7 @@
 				033 /* GeneralSettingsView.swift in Sources */,
 				034 /* AboutView.swift in Sources */,
 				035 /* APITester.swift in Sources */,
+				036 /* RealtimeAudioCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
