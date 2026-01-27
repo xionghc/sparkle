@@ -64,7 +64,7 @@ struct SidebarView: View {
             } label: {
                 HStack {
                     Image(systemName: "person.circle.fill")
-                    Text("我的账号")
+                    Text("My Account")
                     Spacer()
                     Image(systemName: "chevron.up")
                         .font(.caption)

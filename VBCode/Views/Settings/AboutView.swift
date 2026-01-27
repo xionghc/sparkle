@@ -32,13 +32,13 @@ struct AboutView: View {
 
             // Version info
             VStack(spacing: 4) {
-                Text("版本 \(appVersion) (\(buildNumber))")
+                Text("Version \(appVersion) (\(buildNumber))")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
 
             // Description
-            Text("语音转文字工具")
+            Text("Voice to Text Tool")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 

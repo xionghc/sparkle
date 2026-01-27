@@ -24,11 +24,11 @@ struct AccountDetailsView: View {
             }
 
             // User label
-            Text("本地用户")
+            Text("Local User")
                 .font(.title2)
                 .foregroundStyle(.primary)
 
-            Text("本地模式 - 无需登录")
+            Text("Local Mode - No Login Required")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 

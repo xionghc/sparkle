@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum SettingsTab: String, CaseIterable, Identifiable {
-    case account = "账号详情"
-    case general = "通用设置"
-    case about = "关于"
+    case account = "Account"
+    case general = "General"
+    case about = "About"
 
     var id: String { rawValue }
 

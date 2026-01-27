@@ -39,21 +39,21 @@ struct GeneralSettingsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(nsColor: .windowBackgroundColor))
-        .alert("重置设置", isPresented: $showingResetAlert) {
-            Button("取消", role: .cancel) { }
-            Button("重置", role: .destructive) {
+        .alert("Reset Settings", isPresented: $showingResetAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Reset", role: .destructive) {
                 settings.resetToDefaults()
             }
         } message: {
-            Text("确定要将所有设置重置为默认值吗？")
+            Text("Are you sure you want to reset all settings to default values?")
         }
     }
 
     // MARK: - STT Section
 
     private var sttSection: some View {
-        Section("语音转文字 (STT)") {
-            Picker("服务商", selection: Binding(
+        Section("Speech to Text (STT)") {
+            Picker("Provider", selection: Binding(
                 get: { settings.sttProvider },
                 set: { settings.sttProvider = $0 }
             )) {
@@ -69,10 +69,10 @@ struct GeneralSettingsView: View {
                 SecureField("API Key", text: $settings.sttAPIKey)
                     .textFieldStyle(.roundedBorder)
             } else {
-                TextField("模型路径", text: $settings.localWhisperModelPath)
+                TextField("Model Path", text: $settings.localWhisperModelPath)
                     .textFieldStyle(.roundedBorder)
 
-                Text("本地 Whisper 需要 WhisperKit 集成")
+                Text("Local Whisper requires WhisperKit integration")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -81,12 +81,12 @@ struct GeneralSettingsView: View {
                 if settings.isSTTConfigured {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.green)
-                    Text("已配置")
+                    Text("Configured")
                         .foregroundStyle(.green)
                 } else {
                     Image(systemName: "exclamationmark.circle.fill")
                         .foregroundStyle(.orange)
-                    Text("未配置")
+                    Text("Not Configured")
                         .foregroundStyle(.orange)
                 }
 
@@ -103,7 +103,7 @@ struct GeneralSettingsView: View {
                         } else {
                             Image(systemName: "play.circle")
                         }
-                        Text("测试")
+                        Text("Test")
                     }
                 }
                 .disabled(!settings.isSTTConfigured || isTestingSTT || settings.sttProvider == .localWhisper)
@@ -120,26 +120,26 @@ struct GeneralSettingsView: View {
     // MARK: - LLM Section
 
     private var llmSection: some View {
-        Section("LLM (文本润色)") {
+        Section("LLM (Text Polishing)") {
             TextField("API URL", text: $settings.llmAPIURL)
                 .textFieldStyle(.roundedBorder)
 
             SecureField("API Key", text: $settings.llmAPIKey)
                 .textFieldStyle(.roundedBorder)
 
-            TextField("模型", text: $settings.llmModel)
+            TextField("Model", text: $settings.llmModel)
                 .textFieldStyle(.roundedBorder)
 
             HStack {
                 if settings.isLLMConfigured {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.green)
-                    Text("已配置")
+                    Text("Configured")
                         .foregroundStyle(.green)
                 } else {
                     Image(systemName: "info.circle.fill")
                         .foregroundStyle(.blue)
-                    Text("可选 - 不润色转录文本")
+                    Text("Optional - Transcripts won't be polished")
                         .foregroundStyle(.secondary)
                 }
 
@@ -156,7 +156,7 @@ struct GeneralSettingsView: View {
                         } else {
                             Image(systemName: "play.circle")
                         }
-                        Text("测试")
+                        Text("Test")
                     }
                 }
                 .disabled(!settings.isLLMConfigured || isTestingLLM)
@@ -173,8 +173,8 @@ struct GeneralSettingsView: View {
     // MARK: - Prompt Section
 
     private var promptSection: some View {
-        Section("转录提示词") {
-            Text("此提示词指导 LLM 如何润色您的转录文本")
+        Section("Transcription Prompt") {
+            Text("This prompt guides the LLM on how to polish your transcribed text")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
@@ -186,13 +186,13 @@ struct GeneralSettingsView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
 
             HStack {
-                Button("重置为默认") {
+                Button("Reset to Default") {
                     settings.transcriptionPrompt = AppSettings.defaultPrompt
                 }
 
                 Spacer()
 
-                Text("\(settings.transcriptionPrompt.count) 字符")
+                Text("\(settings.transcriptionPrompt.count) characters")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -202,63 +202,63 @@ struct GeneralSettingsView: View {
     // MARK: - Hotkeys Section
 
     private var hotkeysSection: some View {
-        Section("快捷键") {
-            Toggle("启用 fn 键快捷方式", isOn: $settings.enableHotkeys)
+        Section("Hotkeys") {
+            Toggle("Enable fn key shortcuts", isOn: $settings.enableHotkeys)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("短录音 (按住):")
+                Text("Quick Recording (Hold):")
                     .font(.caption.bold())
                     .foregroundStyle(.secondary)
 
                 HStack {
-                    Text("按住 fn")
+                    Text("Hold fn")
                         .font(.caption.monospaced())
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color(nsColor: .controlBackgroundColor))
                         .clipShape(RoundedRectangle(cornerRadius: 4))
-                    Text("按住时录音，松开停止")
+                    Text("Record while holding, stop on release")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
-                Text("免提模式:")
+                Text("Hands-free Mode:")
                     .font(.caption.bold())
                     .foregroundStyle(.secondary)
                     .padding(.top, 4)
 
                 HStack {
-                    Text("双击 fn")
+                    Text("Double-tap fn")
                         .font(.caption.monospaced())
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color(nsColor: .controlBackgroundColor))
                         .clipShape(RoundedRectangle(cornerRadius: 4))
-                    Text("开始免提录音")
+                    Text("Start hands-free recording")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
                 HStack {
-                    Text("fn + 空格")
+                    Text("fn + Space")
                         .font(.caption.monospaced())
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color(nsColor: .controlBackgroundColor))
                         .clipShape(RoundedRectangle(cornerRadius: 4))
-                    Text("开始免提录音")
+                    Text("Start hands-free recording")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
                 HStack {
-                    Text("单击 fn")
+                    Text("Single tap fn")
                         .font(.caption.monospaced())
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(Color(nsColor: .controlBackgroundColor))
                         .clipShape(RoundedRectangle(cornerRadius: 4))
-                    Text("停止免提录音")
+                    Text("Stop hands-free recording")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -269,12 +269,34 @@ struct GeneralSettingsView: View {
     // MARK: - Clipboard Section
 
     private var clipboardSection: some View {
-        Section("剪贴板") {
-            Toggle("录音后自动粘贴到光标处", isOn: $settings.autoPasteEnabled)
+        Section("Clipboard") {
+            Toggle("Auto-paste to cursor after recording", isOn: $settings.autoPasteEnabled)
 
-            Text("启用后，处理完成后会自动将润色后的文本粘贴到光标位置")
+            Text("When enabled, polished text will be automatically pasted at cursor position")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+
+            if settings.autoPasteEnabled {
+                HStack {
+                    if ClipboardManager.shared.isAccessibilityEnabled {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                        Text("Accessibility permission granted")
+                            .foregroundStyle(.green)
+                    } else {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange)
+                        Text("Accessibility permission required")
+                            .foregroundStyle(.orange)
+                        Spacer()
+                        Button("Authorize") {
+                            _ = ClipboardManager.shared.checkAccessibilityPermissions()
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                .font(.caption)
+            }
         }
     }
 
@@ -284,7 +306,7 @@ struct GeneralSettingsView: View {
         Section {
             HStack {
                 Spacer()
-                Button("重置所有设置", role: .destructive) {
+                Button("Reset All Settings", role: .destructive) {
                     showingResetAlert = true
                 }
                 Spacer()

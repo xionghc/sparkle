@@ -19,7 +19,7 @@ struct AccountMenuView: View {
             } label: {
                 HStack {
                     Image(systemName: "person.circle")
-                    Text("我的账号")
+                    Text("My Account")
                     Spacer()
                 }
                 .contentShape(Rectangle())
@@ -37,7 +37,7 @@ struct AccountMenuView: View {
             } label: {
                 HStack {
                     Image(systemName: "gear")
-                    Text("设置")
+                    Text("Settings")
                     Spacer()
                 }
                 .contentShape(Rectangle())

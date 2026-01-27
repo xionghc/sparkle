@@ -26,16 +26,42 @@ final class ClipboardManager {
         // First, copy to clipboard
         copy(text: text)
 
+        // Check accessibility permissions before attempting to paste
+        guard checkAccessibilityPermissions() else {
+            print("Accessibility permissions not granted - text copied to clipboard only")
+            return
+        }
+
         // Small delay to ensure clipboard is updated
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.simulatePaste()
         }
     }
 
+    /// Checks if accessibility permissions are granted, prompts user if not
+    func checkAccessibilityPermissions() -> Bool {
+        // Check if we already have accessibility permissions
+        let trusted = AXIsProcessTrusted()
+
+        if !trusted {
+            // Prompt the user to grant accessibility permissions
+            let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
+            AXIsProcessTrustedWithOptions(options)
+        }
+
+        return trusted
+    }
+
+    /// Checks accessibility status without prompting
+    var isAccessibilityEnabled: Bool {
+        return AXIsProcessTrusted()
+    }
+
     /// Simulates Cmd+V keystroke to paste from clipboard
     private func simulatePaste() {
         // Create event source
         guard let source = CGEventSource(stateID: .hidSystemState) else {
+            print("Failed to create CGEventSource")
             return
         }
 
@@ -44,11 +70,13 @@ final class ClipboardManager {
 
         // Create key down event
         guard let keyDown = CGEvent(keyboardEventSource: source, virtualKey: vKeyCode, keyDown: true) else {
+            print("Failed to create key down event")
             return
         }
 
         // Create key up event
         guard let keyUp = CGEvent(keyboardEventSource: source, virtualKey: vKeyCode, keyDown: false) else {
+            print("Failed to create key up event")
             return
         }
 
@@ -56,7 +84,7 @@ final class ClipboardManager {
         keyDown.flags = .maskCommand
         keyUp.flags = .maskCommand
 
-        // Post events
+        // Post events to the system
         keyDown.post(tap: .cghidEventTap)
         keyUp.post(tap: .cghidEventTap)
     }
