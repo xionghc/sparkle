@@ -203,7 +203,31 @@ struct HistoryContentView: View {
         }
     }
 
-    // MARK: - Glass Search Field Background
+    // Group recordings by day
+    private var groupedRecordings: [(key: Date, recordings: [Recording])] {
+        let calendar = Calendar.current
+        let grouped = Dictionary(grouping: filteredRecordings) { recording in
+            calendar.startOfDay(for: recording.createdAt)
+        }
+        return grouped.map { (key: $0.key, recordings: $0.value) }
+            .sorted { $0.key > $1.key }
+    }
+
+    // Format date for section header
+    private func formatSectionDate(_ date: Date) -> String {
+        let calendar = Calendar.current
+        if calendar.isDateInToday(date) {
+            return "Today"
+        } else if calendar.isDateInYesterday(date) {
+            return "Yesterday"
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy.MM.dd"
+            return formatter.string(from: date)
+        }
+    }
+
+    // MARK: - Glass Backgrounds
 
     @ViewBuilder
     private var searchFieldBackground: some View {
@@ -216,6 +240,22 @@ struct HistoryContentView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(.white.opacity(0.1), lineWidth: 0.5)
+                )
+        }
+    }
+
+    @ViewBuilder
+    private var glassCardBackground: some View {
+        if #available(macOS 26.0, *) {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.clear)
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 10))
+        } else {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
                         .strokeBorder(.white.opacity(0.1), lineWidth: 0.5)
                 )
         }
@@ -237,27 +277,53 @@ struct HistoryContentView: View {
             .padding(.top, 12)
             .padding(.bottom, 8)
 
-            // Recording List with Expandable Editor
+            // Recording List grouped by day with sticky headers
             ScrollView {
-                LazyVStack(spacing: 12) {
-                    ForEach(filteredRecordings) { recording in
-                        ExpandableRecordingRow(
-                            recording: recording,
-                            isExpanded: selectedRecording?.id == recording.id,
-                            onTap: {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    if selectedRecording?.id == recording.id {
-                                        selectedRecording = nil
-                                    } else {
-                                        selectedRecording = recording
+                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    ForEach(groupedRecordings, id: \.key) { group in
+                        Section {
+                            VStack(spacing: 0) {
+                                ForEach(Array(group.recordings.enumerated()), id: \.element.id) { index, recording in
+                                    ExpandableRecordingRow(
+                                        recording: recording,
+                                        isExpanded: selectedRecording?.id == recording.id,
+                                        onTap: {
+                                            withAnimation(.easeInOut(duration: 0.2)) {
+                                                if selectedRecording?.id == recording.id {
+                                                    selectedRecording = nil
+                                                } else {
+                                                    selectedRecording = recording
+                                                }
+                                            }
+                                        }
+                                    )
+
+                                    // Add divider between recordings (not after the last one)
+                                    if index < group.recordings.count - 1 {
+                                        Divider()
+                                            .background(Color.gray.opacity(0.2))
+                                            .padding(.horizontal, 12)
                                     }
                                 }
                             }
-                        )
+                            .background(glassCardBackground)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 16)
+                        } header: {
+                            HStack {
+                                Text(formatSectionDate(group.key))
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(.bar)
+                        }
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 16)
             }
             .overlay {
                 if recordings.isEmpty {
@@ -292,8 +358,11 @@ struct ExpandableRecordingRow: View {
             // Header Row (always visible)
             Button(action: onTap) {
                 HStack {
-                    statusIcon
-                        .frame(width: 20)
+                    // Only show status icon for non-completed states
+                    if recording.status != .completed {
+                        statusIcon
+                            .frame(width: 20)
+                    }
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(recording.title)
@@ -301,7 +370,7 @@ struct ExpandableRecordingRow: View {
                             .lineLimit(1)
 
                         HStack(spacing: 8) {
-                            Text(recording.formattedDate)
+                            Text(recording.formattedTime)
                             Text("·")
                             Text(recording.formattedDuration)
                         }
@@ -341,8 +410,6 @@ struct ExpandableRecordingRow: View {
                 .padding(12)
             }
         }
-        .background(glassCardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
         .contextMenu {
             Button("Copy Polished Text") {
                 ClipboardManager.shared.copy(text: recording.polishedText)
@@ -361,24 +428,6 @@ struct ExpandableRecordingRow: View {
         }
     }
 
-    // MARK: - Glass Card Background
-
-    @ViewBuilder
-    private var glassCardBackground: some View {
-        if #available(macOS 26.0, *) {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.clear)
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 10))
-        } else {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .strokeBorder(.white.opacity(0.1), lineWidth: 0.5)
-                )
-        }
-    }
-
     @ViewBuilder
     private var statusIcon: some View {
         switch recording.status {
@@ -390,8 +439,7 @@ struct ExpandableRecordingRow: View {
             ProgressView()
                 .scaleEffect(0.6)
         case .completed:
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(.green)
+            EmptyView()
         case .failed:
             Image(systemName: "exclamationmark.circle.fill")
                 .foregroundStyle(.red)

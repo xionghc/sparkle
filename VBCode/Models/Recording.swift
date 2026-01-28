@@ -44,6 +44,12 @@ final class Recording {
         return formatter.string(from: createdAt)
     }
 
+    var formattedTime: String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: createdAt)
+    }
+
     var formattedDuration: String {
         let minutes = Int(duration) / 60
         let seconds = Int(duration) % 60
