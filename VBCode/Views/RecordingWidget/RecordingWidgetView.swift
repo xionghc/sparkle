@@ -249,7 +249,7 @@ struct WaveBar: View {
     @State private var animatedHeight: CGFloat = 2
 
     private let minHeight: CGFloat = 2
-    private let maxHeight: CGFloat = 12
+    private let maxHeight: CGFloat = 18
 
     // Create a wave pattern - middle bars are taller
     private var heightMultiplier: CGFloat {
