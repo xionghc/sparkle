@@ -2,7 +2,7 @@
 //  RecordingWidgetView.swift
 //  VBCode
 //
-//  Minimal floating recording widget with dark design
+//  Minimal floating recording widget with liquid glass design
 //
 
 import SwiftUI
@@ -19,13 +19,8 @@ struct RecordingWidgetView: View {
         VStack(spacing: 8) {
             // Main widget pill with fixed size
             ZStack {
-                // Background capsule with smooth anti-aliasing
-                RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
-                    .fill(Color.black.opacity(0.85))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: widgetHeight / 2, style: .continuous)
-                            .strokeBorder(.white.opacity(0.3), lineWidth: 1)
-                    )
+                // Adaptive glass background
+                glassBackground
 
                 // Content
                 widgetContent
@@ -50,6 +45,32 @@ struct RecordingWidgetView: View {
             }
         }
         .recordingWidgetStyle()
+    }
+
+    // MARK: - Glass Background
+
+    @ViewBuilder
+    private var glassBackground: some View {
+        if #available(macOS 26.0, *) {
+            Capsule()
+                .fill(.clear)
+                .glassEffect(.regular, in: Capsule())
+        } else {
+            Capsule()
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    Capsule()
+                        .strokeBorder(
+                            LinearGradient(
+                                colors: [.white.opacity(0.4), .white.opacity(0.1)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+                .shadow(color: .black.opacity(0.25), radius: 12, y: 6)
+        }
     }
 
     @ViewBuilder
@@ -177,43 +198,23 @@ struct CircleButton: View {
                 .font(.system(size: 9, weight: .semibold))
                 .foregroundStyle(isPrimary ? .white : .white.opacity(0.7))
                 .frame(width: 20, height: 20)
-                .background(
-                    Circle()
-                        .stroke(.white.opacity(isPrimary ? 0.6 : 0.3), lineWidth: 1.5)
-                )
+                .background(buttonBackground)
         }
         .buttonStyle(.plain)
     }
-}
 
-// MARK: - Dark Background Modifier
-
-struct DarkBackgroundModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .background(
-                Capsule()
-                    .fill(Color.black.opacity(0.85))
-                    .overlay(
-                        Capsule()
-                            .stroke(.white.opacity(0.3), lineWidth: 1)
-                    )
-            )
-    }
-}
-
-// MARK: - Glass Background Modifier (kept for compatibility)
-
-struct GlassBackgroundModifier: ViewModifier {
-    func body(content: Content) -> some View {
+    @ViewBuilder
+    private var buttonBackground: some View {
         if #available(macOS 26.0, *) {
-            content
-                .glassEffect(.regular, in: Capsule())
+            Circle()
+                .fill(.clear)
+                .glassEffect(.regular, in: Circle())
         } else {
-            content
-                .background(
-                    Capsule()
-                        .fill(.ultraThinMaterial)
+            Circle()
+                .fill(.white.opacity(isPrimary ? 0.15 : 0.08))
+                .overlay(
+                    Circle()
+                        .stroke(.white.opacity(isPrimary ? 0.5 : 0.25), lineWidth: 1)
                 )
         }
     }

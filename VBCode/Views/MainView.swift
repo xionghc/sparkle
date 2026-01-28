@@ -203,6 +203,24 @@ struct HistoryContentView: View {
         }
     }
 
+    // MARK: - Glass Search Field Background
+
+    @ViewBuilder
+    private var searchFieldBackground: some View {
+        if #available(macOS 26.0, *) {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.clear)
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 8))
+        } else {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(.white.opacity(0.1), lineWidth: 0.5)
+                )
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Search Field at Top
@@ -213,7 +231,7 @@ struct HistoryContentView: View {
                     .textFieldStyle(.plain)
             }
             .padding(8)
-            .background(Color(nsColor: .controlBackgroundColor))
+            .background(searchFieldBackground)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .padding(.horizontal, 16)
             .padding(.top, 12)
@@ -323,7 +341,7 @@ struct ExpandableRecordingRow: View {
                 .padding(12)
             }
         }
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(glassCardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .contextMenu {
             Button("Copy Polished Text") {
@@ -340,6 +358,24 @@ struct ExpandableRecordingRow: View {
             Button("Delete", systemImage: "trash", role: .destructive) {
                 recordingManager.deleteRecording(recording)
             }
+        }
+    }
+
+    // MARK: - Glass Card Background
+
+    @ViewBuilder
+    private var glassCardBackground: some View {
+        if #available(macOS 26.0, *) {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.clear)
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 10))
+        } else {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.white.opacity(0.1), lineWidth: 0.5)
+                )
         }
     }
 
