@@ -10,8 +10,8 @@ import SwiftData
 
 @main
 struct VBCodeApp: App {
-    @StateObject private var recordingManager = RecordingManager()
-    @StateObject private var hotkeyManager = HotkeyManager()
+    @State private var recordingManager = RecordingManager()
+    @State private var hotkeyManager = HotkeyManager()
     @Environment(\.openWindow) private var openWindow
 
     var sharedModelContainer: ModelContainer = {
@@ -29,8 +29,8 @@ struct VBCodeApp: App {
         // Main window with history
         WindowGroup {
             MainView()
-                .environmentObject(recordingManager)
-                .environmentObject(hotkeyManager)
+                .environment(recordingManager)
+                .environment(hotkeyManager)
                 .onReceive(NotificationCenter.default.publisher(for: .openRecordingWidget)) { _ in
                     openWindow(id: "recording-widget")
                 }
@@ -49,7 +49,7 @@ struct VBCodeApp: App {
         // Menu bar status item
         MenuBarExtra {
             MenuBarView()
-                .environmentObject(recordingManager)
+                .environment(recordingManager)
         } label: {
             Image(systemName: recordingManager.isRecording ? "waveform.circle.fill" : "waveform.circle")
                 .symbolEffect(.pulse, isActive: recordingManager.isRecording)
@@ -58,8 +58,7 @@ struct VBCodeApp: App {
         // Floating recording widget window
         Window("Recording", id: "recording-widget") {
             RecordingWidgetView()
-                .environmentObject(recordingManager)
-                .recordingWidgetStyle()
+                .environment(recordingManager)
         }
         .windowStyle(.plain)
         .windowResizability(.contentSize)
@@ -67,12 +66,12 @@ struct VBCodeApp: App {
 
         // Settings window
         #if os(macOS)
-        Window("Setting", id: "settings-window") {
+        Window("Settings", id: "settings-window") {
             SettingsWindowView()
-                .environmentObject(recordingManager)
+                .environment(recordingManager)
         }
         .windowResizability(.contentSize)
-        .defaultSize(width: 700, height: 500)
+        .defaultSize(width: 820, height: 560)
         #endif
     }
 }

@@ -16,17 +16,14 @@ struct HomeView: View {
         RecordingStatistics(recordings: recordings)
     }
 
-    private var thisMonthStats: RecordingStatistics {
-        let thisMonthRecordings = recordings.filter { recording in
-            Calendar.current.isDate(recording.createdAt, equalTo: Date(), toGranularity: .month)
-        }
-        return RecordingStatistics(recordings: thisMonthRecordings)
-    }
-
-    private var thisMonthRecordingCount: Int {
+    private var thisMonthRecordings: [Recording] {
         recordings.filter { recording in
             Calendar.current.isDate(recording.createdAt, equalTo: Date(), toGranularity: .month)
-        }.count
+        }
+    }
+
+    private var thisMonthStats: RecordingStatistics {
+        RecordingStatistics(recordings: thisMonthRecordings)
     }
 
     var body: some View {
@@ -45,7 +42,7 @@ struct HomeView: View {
                     title: "This Month",
                     icon: "calendar",
                     stats: thisMonthStats,
-                    recordingCount: thisMonthRecordingCount
+                    recordingCount: thisMonthRecordings.count
                 )
 
                 Spacer()

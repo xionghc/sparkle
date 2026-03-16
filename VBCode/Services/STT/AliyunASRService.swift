@@ -202,12 +202,13 @@ private class WebSocketTranscriptionSession: NSObject, URLSessionWebSocketDelega
 
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = timeout
-        session = URLSession(configuration: configuration, delegate: self, delegateQueue: .main)
+        // Use background queue for WebSocket handling + JSON parsing
+        session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
 
         webSocket = session?.webSocketTask(with: request)
         webSocket?.resume()
 
-        // Start timeout timer
+        // Start timeout timer on main thread (Timer requires RunLoop)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: self.timeout, repeats: false) { [weak self] _ in
@@ -258,6 +259,9 @@ private class WebSocketTranscriptionSession: NSObject, URLSessionWebSocketDelega
         let chunkSize = 3200
         var offset = 0
 
+        // Use a dedicated serial queue for chunk scheduling
+        let chunkQueue = DispatchQueue(label: "com.vbcode.audio-chunks")
+
         func sendNextChunk() {
             guard !isCompleted, offset < audioData.count else {
                 // All audio sent, send finish task
@@ -276,7 +280,7 @@ private class WebSocketTranscriptionSession: NSObject, URLSessionWebSocketDelega
                 }
 
                 // Small delay between chunks (simulate real-time streaming)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                chunkQueue.asyncAfter(deadline: .now() + 0.05) {
                     sendNextChunk()
                 }
             }

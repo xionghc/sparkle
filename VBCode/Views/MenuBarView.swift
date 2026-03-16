@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MenuBarView: View {
-    @EnvironmentObject private var recordingManager: RecordingManager
+    @Environment(RecordingManager.self) private var recordingManager
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
@@ -128,5 +128,5 @@ struct MenuBarView: View {
 
 #Preview {
     MenuBarView()
-        .environmentObject(RecordingManager())
+        .environment(RecordingManager())
 }

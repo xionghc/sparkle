@@ -13,12 +13,14 @@ import Foundation
 import AppKit
 import Carbon.HIToolbox
 import Combine
+import Observation
 
 @MainActor
-final class HotkeyManager: ObservableObject {
-    @Published var isFnPressed = false
-    @Published var isHolding = false
-    @Published var isInHandsFreeRecording = false
+@Observable
+final class HotkeyManager {
+    var isFnPressed = false
+    var isHolding = false
+    var isInHandsFreeRecording = false
 
     private var localMonitor: Any?
     private var globalMonitor: Any?
@@ -47,14 +49,14 @@ final class HotkeyManager: ObservableObject {
 
         // Monitor for flags changed (fn key)
         flagsMonitor = NSEvent.addGlobalMonitorForEvents(matching: .flagsChanged) { [weak self] event in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.handleFlagsChanged(event)
             }
         }
 
         // Local monitor for when app is in focus
         localMonitor = NSEvent.addLocalMonitorForEvents(matching: [.flagsChanged, .keyDown]) { [weak self] event in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 if event.type == .flagsChanged {
                     self?.handleFlagsChanged(event)
                 } else if event.type == .keyDown {
@@ -66,7 +68,7 @@ final class HotkeyManager: ObservableObject {
 
         // Global monitor for key events
         globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.handleKeyDown(event)
             }
         }
@@ -143,7 +145,7 @@ final class HotkeyManager: ObservableObject {
         // Start timer to detect hold (for short recording mode)
         holdTimer?.invalidate()
         holdTimer = Timer.scheduledTimer(withTimeInterval: holdThreshold, repeats: false) { [weak self] _ in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 guard let self = self, self.isFnPressed, !self.isInHandsFreeRecording else { return }
                 self.isHolding = true
                 self.onStartHoldRecording?()

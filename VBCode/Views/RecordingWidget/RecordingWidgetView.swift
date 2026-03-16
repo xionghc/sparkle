@@ -12,7 +12,7 @@ private let widgetWidth: CGFloat = 120
 private let widgetHeight: CGFloat = 32
 
 struct RecordingWidgetView: View {
-    @EnvironmentObject private var recordingManager: RecordingManager
+    @Environment(RecordingManager.self) private var recordingManager
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -278,7 +278,7 @@ struct WaveBar: View {
 
 #Preview("Recording") {
     RecordingWidgetView()
-        .environmentObject(RecordingManager())
+        .environment(RecordingManager())
         .padding(50)
         .background(Color.gray)
 }

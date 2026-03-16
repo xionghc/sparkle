@@ -7,15 +7,24 @@
 
 @preconcurrency import AVFoundation
 import Combine
+import os
 
 /// Real-time audio capture that outputs PCM buffer stream while saving to local file
 @MainActor
 final class RealtimeAudioCapture: ObservableObject {
     private let audioEngine = AVAudioEngine()
-    private var isCapturing = false
+
+    // Thread-safe state accessed from the audio tap callback
+    private nonisolated(unsafe) var _isCapturing = false
+    private nonisolated(unsafe) var _audioFile: AVAudioFile?
+    private let lock = OSAllocatedUnfairLock()
+
+    private var isCapturing: Bool {
+        get { lock.withLock { _isCapturing } }
+        set { lock.withLock { _isCapturing = newValue } }
+    }
 
     // For local file saving
-    private var audioFile: AVAudioFile?
     private(set) var savedFileURL: URL?
 
     // Audio format parameters
@@ -70,7 +79,8 @@ final class RealtimeAudioCapture: ObservableObject {
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
-        audioFile = try AVAudioFile(forWriting: fileURL, settings: fileSettings)
+        let file = try AVAudioFile(forWriting: fileURL, settings: fileSettings)
+        lock.withLock { _audioFile = file }
 
         // Format for STT (16kHz, mono, 16-bit PCM)
         guard let sttFormat = AVAudioFormat(
@@ -95,22 +105,30 @@ final class RealtimeAudioCapture: ObservableObject {
             self?.streamContinuation = continuation
 
             // Install tap to capture audio buffers
+            // Note: This callback runs on a real-time audio thread
             inputNode.installTap(onBus: 0, bufferSize: 4096, format: hardwareFormat) { [weak self] buffer, _ in
-                guard let self = self, self.isCapturing else { return }
+                guard let self = self else { return }
 
-                // 1. Write to local file (original quality)
-                do {
-                    try self.audioFile?.write(from: buffer)
-                } catch {
-                    // Log but don't fail - file saving is secondary
-                    print("Warning: Failed to write audio to file: \(error)")
+                // Check capturing state thread-safely
+                guard self.lock.withLock({ self._isCapturing }) else { return }
+
+                // 1. Write to local file (original quality) — thread-safe via lock
+                self.lock.withLock {
+                    do {
+                        try self._audioFile?.write(from: buffer)
+                    } catch {
+                        print("Warning: Failed to write audio to file: \(error)")
+                    }
                 }
 
-                // 2. Update amplitude
-                self.updateAmplitude(buffer: buffer)
+                // 2. Compute amplitude on audio thread, dispatch to MainActor
+                let amplitude = Self.computeAmplitude(buffer: buffer)
+                Task { @MainActor in
+                    self.currentAmplitude = amplitude
+                }
 
-                // 3. Convert to 16kHz PCM for STT
-                if let pcmData = self.convertToSTTFormat(buffer: buffer, converter: converter, targetFormat: sttFormat) {
+                // 3. Convert to 16kHz PCM for STT (nonisolated, no shared state)
+                if let pcmData = Self.convertToSTTFormat(buffer: buffer, converter: converter, targetFormat: sttFormat) {
                     continuation.yield(pcmData)
                 }
             }
@@ -167,13 +185,14 @@ final class RealtimeAudioCapture: ObservableObject {
     private func cleanup() {
         audioEngine.inputNode.removeTap(onBus: 0)
         audioEngine.stop()
-        audioFile = nil
+        lock.withLock { _audioFile = nil }
         stopDurationTimer()
     }
 
     private func startDurationTimer() {
+        // Timer callback is @Sendable; use assumeIsolated since we know we're on MainActor
         durationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 guard let self = self, let startTime = self.startTime else { return }
                 self.recordingDuration = Date().timeIntervalSince(startTime)
             }
@@ -185,8 +204,9 @@ final class RealtimeAudioCapture: ObservableObject {
         durationTimer = nil
     }
 
-    private func updateAmplitude(buffer: AVAudioPCMBuffer) {
-        guard let channelData = buffer.floatChannelData else { return }
+    /// Compute amplitude from audio buffer — safe to call from any thread
+    private nonisolated static func computeAmplitude(buffer: AVAudioPCMBuffer) -> Float {
+        guard let channelData = buffer.floatChannelData else { return 0 }
 
         let channelDataValue = channelData.pointee
         let frameLength = Int(buffer.frameLength)
@@ -197,15 +217,11 @@ final class RealtimeAudioCapture: ObservableObject {
         }
 
         let average = sum / Float(frameLength)
-        // Convert to 0-1 range (rough approximation)
-        let normalizedAmplitude = min(1.0, average * 2)
-
-        Task { @MainActor in
-            self.currentAmplitude = normalizedAmplitude
-        }
+        return min(1.0, average * 2)
     }
 
-    private func convertToSTTFormat(
+    /// Convert audio buffer to STT format — safe to call from any thread (no shared state)
+    private nonisolated static func convertToSTTFormat(
         buffer: AVAudioPCMBuffer,
         converter: AVAudioConverter,
         targetFormat: AVAudioFormat

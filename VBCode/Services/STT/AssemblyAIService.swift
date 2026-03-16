@@ -36,17 +36,13 @@ final class AssemblyAIService: STTServiceProtocol {
             throw STTError.invalidURL
         }
 
-        guard let audioData = try? Data(contentsOf: audioURL) else {
-            throw STTError.fileReadError
-        }
-
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(apiKey, forHTTPHeaderField: "Authorization")
         request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        request.httpBody = audioData
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        // Stream file directly instead of loading into memory
+        let (data, response) = try await URLSession.shared.upload(for: request, fromFile: audioURL)
 
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {

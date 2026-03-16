@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GeneralSettingsView: View {
-    @ObservedObject private var settings = AppSettings.shared
+    @Bindable private var settings = AppSettings.shared
     @State private var showingResetAlert = false
 
     // STT Test State

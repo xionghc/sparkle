@@ -23,7 +23,10 @@ final class AudioRecorder: NSObject, ObservableObject {
     private var durationTimer: Timer?
     private var amplitudeTimer: Timer?
 
+    // Ring buffer for O(1) amplitude append/evict
     private let maxAmplitudeSamples = 100
+    private var amplitudeRingBuffer: [Float] = []
+    private var ringBufferIndex = 0
 
     override init() {
         super.init()
@@ -72,6 +75,8 @@ final class AudioRecorder: NSObject, ObservableObject {
         isRecording = true
         startTime = Date()
         amplitudeData = []
+        amplitudeRingBuffer = []
+        ringBufferIndex = 0
         errorMessage = nil
 
         // Start timers for duration and amplitude updates
@@ -106,6 +111,8 @@ final class AudioRecorder: NSObject, ObservableObject {
         isRecording = false
         recordingDuration = 0
         amplitudeData = []
+        amplitudeRingBuffer = []
+        ringBufferIndex = 0
         recordingURL = nil
     }
 
@@ -127,9 +134,9 @@ final class AudioRecorder: NSObject, ObservableObject {
     }
 
     private func startTimers() {
-        // Duration timer
+        // Duration timer — Timer callback is @Sendable, so dispatch to MainActor
         durationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 guard let self = self, let startTime = self.startTime else { return }
                 self.recordingDuration = Date().timeIntervalSince(startTime)
             }
@@ -137,7 +144,7 @@ final class AudioRecorder: NSObject, ObservableObject {
 
         // Amplitude timer for waveform
         amplitudeTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.updateAmplitude()
             }
         }
@@ -160,10 +167,19 @@ final class AudioRecorder: NSObject, ObservableObject {
         let normalizedAmplitude = max(0, (amplitude + 50) / 50)
         currentAmplitude = normalizedAmplitude
 
-        // Add to amplitude data for waveform
-        amplitudeData.append(normalizedAmplitude)
-        if amplitudeData.count > maxAmplitudeSamples {
-            amplitudeData.removeFirst()
+        // Add to ring buffer for O(1) append/evict
+        if amplitudeRingBuffer.count < maxAmplitudeSamples {
+            amplitudeRingBuffer.append(normalizedAmplitude)
+        } else {
+            amplitudeRingBuffer[ringBufferIndex] = normalizedAmplitude
+        }
+        ringBufferIndex = (ringBufferIndex + 1) % maxAmplitudeSamples
+
+        // Publish ordered view of the ring buffer
+        if amplitudeRingBuffer.count < maxAmplitudeSamples {
+            amplitudeData = amplitudeRingBuffer
+        } else {
+            amplitudeData = Array(amplitudeRingBuffer[ringBufferIndex...]) + Array(amplitudeRingBuffer[..<ringBufferIndex])
         }
     }
 

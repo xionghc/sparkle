@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import SwiftData
 import Combine
+import Observation
 
 enum RecordingState {
     case idle
@@ -27,12 +28,13 @@ private struct ActivePipeline {
 }
 
 @MainActor
-final class RecordingManager: ObservableObject {
-    @Published var state: RecordingState = .idle
-    @Published var currentRecording: Recording?
-    @Published var errorMessage: String?
-    @Published var processingProgress: Double = 0
-    @Published var currentAmplitude: Float = 0
+@Observable
+final class RecordingManager {
+    var state: RecordingState = .idle
+    var currentRecording: Recording?
+    var errorMessage: String?
+    var processingProgress: Double = 0
+    var currentAmplitude: Float = 0
 
     // Traditional file-based recorder
     private let audioRecorder = AudioRecorder()
@@ -52,7 +54,7 @@ final class RecordingManager: ObservableObject {
     private var realtimeAmplitudeObserver: AnyCancellable?
 
     private var modelContext: ModelContext?
-    @Published private(set) var isHandsFreeMode = false
+    private(set) var isHandsFreeMode = false
 
     /// Whether using realtime streaming mode (Aliyun ASR)
     private var isRealtimeMode: Bool {
@@ -265,65 +267,48 @@ final class RecordingManager: ObservableObject {
         processingProgress = 0.5
 
         Task {
-            do {
-                // Wait for STT processing to complete
-                await sttProcessingTask?.value
+            // Wait for STT processing to complete
+            await sttProcessingTask?.value
 
-                // Get LLM result if available
-                if let llmTask = activePipeline?.llmTask {
-                    processingProgress = 0.7
+            // Get LLM result if available
+            if let llmTask = activePipeline?.llmTask {
+                processingProgress = 0.7
+                do {
                     let polished = try await llmTask.value
                     currentRecording?.polishedText = polished
-                    processingProgress = 0.9
-                } else {
-                    // No LLM configured, use accumulated transcript
+                } catch {
+                    // LLM failed, fall back to accumulated transcript
                     currentRecording?.polishedText = activePipeline?.accumulatedTranscript ?? currentRecording?.originalTranscript ?? ""
                 }
-
-                // Complete
-                currentRecording?.status = .completed
-                processingProgress = 1.0
-
-                // Save to history
-                if let recording = currentRecording {
-                    saveRecording(recording)
-                }
-
-                // Copy to clipboard and optionally paste
-                let finalText = currentRecording?.polishedText ?? ""
-                if settings.autoPasteEnabled {
-                    clipboardManager.pasteAtCursor(text: finalText)
-                } else {
-                    clipboardManager.copy(text: finalText)
-                }
-
-                state = .completed
-
-                // Cleanup
-                cleanupPipeline()
-                currentRecording = nil
-
-            } catch {
-                // LLM failed, use original transcript
+                processingProgress = 0.9
+            } else {
+                // No LLM configured, use accumulated transcript
                 currentRecording?.polishedText = activePipeline?.accumulatedTranscript ?? currentRecording?.originalTranscript ?? ""
-                currentRecording?.status = .completed
-
-                if let recording = currentRecording {
-                    saveRecording(recording)
-                }
-
-                let finalText = currentRecording?.polishedText ?? ""
-                if settings.autoPasteEnabled {
-                    clipboardManager.pasteAtCursor(text: finalText)
-                } else {
-                    clipboardManager.copy(text: finalText)
-                }
-
-                state = .completed
-                cleanupPipeline()
-                currentRecording = nil
             }
+
+            completePipeline()
         }
+    }
+
+    /// Shared completion logic for the realtime pipeline
+    private func completePipeline() {
+        currentRecording?.status = .completed
+        processingProgress = 1.0
+
+        if let recording = currentRecording {
+            saveRecording(recording)
+        }
+
+        let finalText = currentRecording?.polishedText ?? ""
+        if settings.autoPasteEnabled {
+            clipboardManager.pasteAtCursor(text: finalText)
+        } else {
+            clipboardManager.copy(text: finalText)
+        }
+
+        state = .completed
+        cleanupPipeline()
+        currentRecording = nil
     }
 
     /// Cleanup pipeline resources
@@ -452,7 +437,11 @@ final class RecordingManager: ObservableObject {
         guard let context = modelContext else { return }
 
         context.insert(recording)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            errorMessage = "Failed to save recording: \(error.localizedDescription)"
+        }
     }
 
     // MARK: - History Management
@@ -466,7 +455,11 @@ final class RecordingManager: ObservableObject {
         }
 
         context.delete(recording)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            errorMessage = "Failed to delete recording: \(error.localizedDescription)"
+        }
     }
 
     func repolish(_ recording: Recording) {
@@ -476,7 +469,11 @@ final class RecordingManager: ObservableObject {
             do {
                 let polished = try await llmService.polish(transcript: recording.originalTranscript)
                 recording.polishedText = polished
-                try? modelContext?.save()
+                do {
+                    try modelContext?.save()
+                } catch {
+                    errorMessage = "Failed to save polished text: \(error.localizedDescription)"
+                }
             } catch {
                 errorMessage = error.localizedDescription
             }

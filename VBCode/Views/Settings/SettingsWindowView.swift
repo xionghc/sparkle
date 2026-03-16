@@ -24,32 +24,21 @@ enum SettingsTab: String, CaseIterable, Identifiable {
 }
 
 struct SettingsWindowView: View {
-    @State private var selectedTab: SettingsTab = .general
+    @State private var selectedTab: SettingsTab? = .general
 
     var body: some View {
-        HStack(spacing: 0) {
-            // Left side tab buttons
-            VStack(spacing: 4) {
+        NavigationSplitView {
+            List(selection: $selectedTab) {
                 ForEach(SettingsTab.allCases) { tab in
-                    SettingsTabButton(
-                        tab: tab,
-                        isSelected: selectedTab == tab
-                    ) {
-                        selectedTab = tab
-                    }
+                    Label(tab.rawValue, systemImage: tab.icon)
+                        .tag(tab)
                 }
-                Spacer()
             }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 8)
-            .frame(width: 100)
-            .background(Color(nsColor: .windowBackgroundColor))
-
-            Divider()
-
-            // Right side content
+            .listStyle(.sidebar)
+            .navigationTitle("Settings")
+        } detail: {
             Group {
-                switch selectedTab {
+                switch selectedTab ?? .general {
                 case .account:
                     AccountDetailsView()
                 case .general:
@@ -59,32 +48,9 @@ struct SettingsWindowView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .navigationTitle(selectedTab?.rawValue ?? "Settings")
         }
-        .frame(width: 700, height: 500)
-    }
-}
-
-// MARK: - Settings Tab Button
-
-struct SettingsTabButton: View {
-    let tab: SettingsTab
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 4) {
-                Image(systemName: tab.icon)
-                    .font(.system(size: 20))
-                Text(tab.rawValue)
-                    .font(.caption)
-            }
-            .frame(width: 80, height: 56)
-            .background(isSelected ? Color.accentColor.opacity(0.15) : Color.clear)
-            .foregroundStyle(isSelected ? Color.accentColor : .secondary)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-        }
-        .buttonStyle(.plain)
+        .frame(width: 820, height: 560)
     }
 }
 

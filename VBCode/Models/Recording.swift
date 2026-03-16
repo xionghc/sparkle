@@ -37,17 +37,25 @@ final class Recording {
         return words.isEmpty ? "Untitled Recording" : words + (text.split(separator: " ").count > 5 ? "..." : "")
     }
 
+    private static let dateTimeFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateStyle = .short
+        f.timeStyle = .short
+        return f
+    }()
+
+    private static let timeOnlyFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.timeStyle = .short
+        return f
+    }()
+
     var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: createdAt)
+        Self.dateTimeFormatter.string(from: createdAt)
     }
 
     var formattedTime: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: createdAt)
+        Self.timeOnlyFormatter.string(from: createdAt)
     }
 
     var formattedDuration: String {

@@ -7,8 +7,10 @@
 
 import Foundation
 import SwiftUI
+import Observation
 
-final class AppSettings: ObservableObject {
+@Observable
+final class AppSettings {
     static let shared = AppSettings()
 
     static let defaultPrompt = """
@@ -37,43 +39,43 @@ final class AppSettings: ObservableObject {
         static let localWhisperModelPath = "localWhisperModelPath"
     }
 
-    @Published var sttProviderRawValue: String {
+    var sttProviderRawValue: String {
         didSet { defaults.set(sttProviderRawValue, forKey: Keys.sttProvider) }
     }
 
-    @Published var sttAPIURL: String {
+    var sttAPIURL: String {
         didSet { defaults.set(sttAPIURL, forKey: Keys.sttAPIURL) }
     }
 
-    @Published var sttAPIKey: String {
+    var sttAPIKey: String {
         didSet { defaults.set(sttAPIKey, forKey: Keys.sttAPIKey) }
     }
 
-    @Published var llmAPIURL: String {
+    var llmAPIURL: String {
         didSet { defaults.set(llmAPIURL, forKey: Keys.llmAPIURL) }
     }
 
-    @Published var llmAPIKey: String {
+    var llmAPIKey: String {
         didSet { defaults.set(llmAPIKey, forKey: Keys.llmAPIKey) }
     }
 
-    @Published var llmModel: String {
+    var llmModel: String {
         didSet { defaults.set(llmModel, forKey: Keys.llmModel) }
     }
 
-    @Published var transcriptionPrompt: String {
+    var transcriptionPrompt: String {
         didSet { defaults.set(transcriptionPrompt, forKey: Keys.transcriptionPrompt) }
     }
 
-    @Published var enableHotkeys: Bool {
+    var enableHotkeys: Bool {
         didSet { defaults.set(enableHotkeys, forKey: Keys.enableHotkeys) }
     }
 
-    @Published var autoPasteEnabled: Bool {
+    var autoPasteEnabled: Bool {
         didSet { defaults.set(autoPasteEnabled, forKey: Keys.autoPasteEnabled) }
     }
 
-    @Published var localWhisperModelPath: String {
+    var localWhisperModelPath: String {
         didSet { defaults.set(localWhisperModelPath, forKey: Keys.localWhisperModelPath) }
     }
 
