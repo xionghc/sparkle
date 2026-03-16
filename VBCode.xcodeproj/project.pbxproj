@@ -23,24 +23,21 @@
 		014 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114; };
 		015 /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115; };
 		016 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116; };
-		017 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117; };
-		018 /* TranscriptEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118; };
 		020 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120; };
-		030 /* AccountMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132; };
 		031 /* SettingsWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133; };
 		032 /* AccountDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134; };
 		033 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135; };
 		034 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136; };
 		035 /* APITester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137; };
 		021 /* RecordingWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121; };
-		022 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122; };
 		023 /* RecordingWidgetWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123; };
 		024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124; };
 		025 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127; };
 		026 /* AliyunASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128; };
 		027 /* RecordingStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129; };
 		028 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130; };
-		029 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131; };
+		017 /* HistoryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117; };
+		018 /* HomeHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118; };
 		036 /* RealtimeAudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138; };
 /* End PBXBuildFile section */
 
@@ -62,17 +59,15 @@
 		114 /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
 		115 /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
 		116 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		117 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		118 /* TranscriptEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptEditorView.swift; sourceTree = "<group>"; };
+		117 /* HistoryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryContentView.swift; sourceTree = "<group>"; };
+		118 /* HomeHeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeroView.swift; sourceTree = "<group>"; };
 		120 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
-		132 /* AccountMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuView.swift; sourceTree = "<group>"; };
 		133 /* SettingsWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowView.swift; sourceTree = "<group>"; };
 		134 /* AccountDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailsView.swift; sourceTree = "<group>"; };
 		135 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		136 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		137 /* APITester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITester.swift; sourceTree = "<group>"; };
 		121 /* RecordingWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingWidgetView.swift; sourceTree = "<group>"; };
-		122 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		123 /* RecordingWidgetWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingWidgetWindow.swift; sourceTree = "<group>"; };
 		124 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		125 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,7 +76,6 @@
 		128 /* AliyunASRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliyunASRService.swift; sourceTree = "<group>"; };
 		129 /* RecordingStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingStatistics.swift; sourceTree = "<group>"; };
 		130 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		131 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		138 /* RealtimeAudioCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeAudioCapture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,12 +136,10 @@
 			isa = PBXGroup;
 			children = (
 				116 /* MainView.swift */,
-				117 /* HistoryView.swift */,
-				118 /* TranscriptEditorView.swift */,
 				120 /* MenuBarView.swift */,
 				130 /* HomeView.swift */,
-				131 /* SidebarView.swift */,
-				132 /* AccountMenuView.swift */,
+				117 /* HistoryContentView.swift */,
+				118 /* HomeHeroView.swift */,
 				308 /* RecordingWidget */,
 				310 /* Settings */,
 			);
@@ -200,7 +192,6 @@
 			isa = PBXGroup;
 			children = (
 				121 /* RecordingWidgetView.swift */,
-				122 /* WaveformView.swift */,
 				123 /* RecordingWidgetWindow.swift */,
 			);
 			path = RecordingWidget;
@@ -305,15 +296,15 @@
 				014 /* ClipboardManager.swift in Sources */,
 				015 /* RecordingManager.swift in Sources */,
 				016 /* MainView.swift in Sources */,
-				017 /* HistoryView.swift in Sources */,
-				018 /* TranscriptEditorView.swift in Sources */,
 				020 /* MenuBarView.swift in Sources */,
 				021 /* RecordingWidgetView.swift in Sources */,
-				022 /* WaveformView.swift in Sources */,
 				023 /* RecordingWidgetWindow.swift in Sources */,
 				025 /* SoundManager.swift in Sources */,
 				026 /* AliyunASRService.swift in Sources */,
-				030 /* AccountMenuView.swift in Sources */,
+				027 /* RecordingStatistics.swift in Sources */,
+				028 /* HomeView.swift in Sources */,
+				017 /* HistoryContentView.swift in Sources */,
+				018 /* HomeHeroView.swift in Sources */,
 				031 /* SettingsWindowView.swift in Sources */,
 				032 /* AccountDetailsView.swift in Sources */,
 				033 /* GeneralSettingsView.swift in Sources */,
