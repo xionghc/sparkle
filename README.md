@@ -1,4 +1,4 @@
-# VBCode - Voice-to-Text macOS Application
+# Sparkle - Voice-to-Text macOS Application
 
 A macOS application for audio recording with STT (Speech-to-Text) transcription and LLM-powered text polishing. Features hotkey-based recording controls and automatic clipboard integration.
 
@@ -10,12 +10,12 @@ A macOS application for audio recording with STT (Speech-to-Text) transcription 
 ## Project Structure
 
 ```
-VBCode/
-├── VBCode.xcodeproj/
-├── VBCode/
-│   ├── VBCodeApp.swift                 # Main app entry with scenes
+Sparkle/
+├── Sparkle.xcodeproj/
+├── Sparkle/
+│   ├── SparkleApp.swift                # Main app entry with scenes
 │   ├── Info.plist                      # App configuration
-│   ├── VBCode.entitlements             # App permissions
+│   ├── Sparkle.entitlements            # App permissions
 │   ├── Models/
 │   │   ├── Recording.swift             # SwiftData model
 │   │   ├── STTProvider.swift           # STT provider enum
@@ -99,18 +99,18 @@ VBCode/
 
 ```bash
 # Open project in Xcode
-open VBCode.xcodeproj
+open Sparkle.xcodeproj
 
 # Build from command line
-xcodebuild -project VBCode.xcodeproj -scheme VBCode -configuration Debug build
+xcodebuild -project Sparkle.xcodeproj -scheme Sparkle -configuration Debug build
 
 # Run the app
-open ./build/Debug/VBCode.app
+open ./build/Debug/Sparkle.app
 ```
 
 ## Configuration
 
-1. Launch VBCode
+1. Launch Sparkle
 2. Open Settings (Cmd+,)
 3. Configure API settings:
    - **STT Provider**: Select your preferred speech-to-text service

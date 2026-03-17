@@ -1,0 +1,518 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		001 /* SparkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101; };
+		002 /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102; };
+		003 /* STTProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103; };
+		004 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104; };
+		005 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105; };
+		006 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106; };
+		007 /* STTServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107; };
+		008 /* OpenAIWhisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108; };
+		009 /* LocalWhisperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109; };
+		010 /* DeepgramService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110; };
+		011 /* AssemblyAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111; };
+		012 /* CustomSTTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112; };
+		013 /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113; };
+		014 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114; };
+		015 /* RecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115; };
+		016 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116; };
+		020 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120; };
+		031 /* SettingsWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133; };
+		032 /* AccountDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134; };
+		033 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135; };
+		034 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136; };
+		035 /* APITester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137; };
+		021 /* RecordingWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121; };
+		023 /* RecordingWidgetWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123; };
+		024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 124; };
+		025 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127; };
+		026 /* AliyunASRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128; };
+		027 /* RecordingStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129; };
+		028 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130; };
+		017 /* HistoryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117; };
+		018 /* HomeHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118; };
+		036 /* RealtimeAudioCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		100 /* Sparkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sparkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		101 /* SparkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleApp.swift; sourceTree = "<group>"; };
+		102 /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
+		103 /* STTProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTProvider.swift; sourceTree = "<group>"; };
+		104 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		105 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		106 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
+		107 /* STTServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STTServiceProtocol.swift; sourceTree = "<group>"; };
+		108 /* OpenAIWhisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIWhisperService.swift; sourceTree = "<group>"; };
+		109 /* LocalWhisperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalWhisperService.swift; sourceTree = "<group>"; };
+		110 /* DeepgramService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepgramService.swift; sourceTree = "<group>"; };
+		111 /* AssemblyAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyAIService.swift; sourceTree = "<group>"; };
+		112 /* CustomSTTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSTTService.swift; sourceTree = "<group>"; };
+		113 /* LLMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMService.swift; sourceTree = "<group>"; };
+		114 /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
+		115 /* RecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingManager.swift; sourceTree = "<group>"; };
+		116 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		117 /* HistoryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryContentView.swift; sourceTree = "<group>"; };
+		118 /* HomeHeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeroView.swift; sourceTree = "<group>"; };
+		120 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		133 /* SettingsWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowView.swift; sourceTree = "<group>"; };
+		134 /* AccountDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailsView.swift; sourceTree = "<group>"; };
+		135 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		136 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		137 /* APITester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITester.swift; sourceTree = "<group>"; };
+		121 /* RecordingWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingWidgetView.swift; sourceTree = "<group>"; };
+		123 /* RecordingWidgetWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingWidgetWindow.swift; sourceTree = "<group>"; };
+		124 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		125 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		126 /* Sparkle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sparkle.entitlements; sourceTree = "<group>"; };
+		127 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		128 /* AliyunASRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliyunASRService.swift; sourceTree = "<group>"; };
+		129 /* RecordingStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingStatistics.swift; sourceTree = "<group>"; };
+		130 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		138 /* RealtimeAudioCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeAudioCapture.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		200 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		300 = {
+			isa = PBXGroup;
+			children = (
+				301 /* Sparkle */,
+				302 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		301 /* Sparkle */ = {
+			isa = PBXGroup;
+			children = (
+				101 /* SparkleApp.swift */,
+				303 /* Models */,
+				304 /* Views */,
+				305 /* Services */,
+				306 /* Managers */,
+				307 /* Resources */,
+				125 /* Info.plist */,
+				126 /* Sparkle.entitlements */,
+			);
+			path = Sparkle;
+			sourceTree = "<group>";
+		};
+		302 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				100 /* Sparkle.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		303 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				102 /* Recording.swift */,
+				103 /* STTProvider.swift */,
+				104 /* AppSettings.swift */,
+				129 /* RecordingStatistics.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		304 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				116 /* MainView.swift */,
+				120 /* MenuBarView.swift */,
+				130 /* HomeView.swift */,
+				117 /* HistoryContentView.swift */,
+				118 /* HomeHeroView.swift */,
+				308 /* RecordingWidget */,
+				310 /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		310 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				133 /* SettingsWindowView.swift */,
+				134 /* AccountDetailsView.swift */,
+				135 /* GeneralSettingsView.swift */,
+				136 /* AboutView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		305 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				105 /* AudioRecorder.swift */,
+				106 /* HotkeyManager.swift */,
+				113 /* LLMService.swift */,
+				138 /* RealtimeAudioCapture.swift */,
+				127 /* SoundManager.swift */,
+				137 /* APITester.swift */,
+				309 /* STT */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		306 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				114 /* ClipboardManager.swift */,
+				115 /* RecordingManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		307 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				124 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		308 /* RecordingWidget */ = {
+			isa = PBXGroup;
+			children = (
+				121 /* RecordingWidgetView.swift */,
+				123 /* RecordingWidgetWindow.swift */,
+			);
+			path = RecordingWidget;
+			sourceTree = "<group>";
+		};
+		309 /* STT */ = {
+			isa = PBXGroup;
+			children = (
+				107 /* STTServiceProtocol.swift */,
+				108 /* OpenAIWhisperService.swift */,
+				109 /* LocalWhisperService.swift */,
+				110 /* DeepgramService.swift */,
+				111 /* AssemblyAIService.swift */,
+				128 /* AliyunASRService.swift */,
+				112 /* CustomSTTService.swift */,
+			);
+			path = STT;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		400 /* Sparkle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 500;
+			buildPhases = (
+				401 /* Sources */,
+				200 /* Frameworks */,
+				402 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Sparkle;
+			productName = Sparkle;
+			productReference = 100 /* Sparkle.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		600 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					400 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 601;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 300;
+			productRefGroup = 302 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				400 /* Sparkle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		402 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				024 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				001 /* SparkleApp.swift in Sources */,
+				002 /* Recording.swift in Sources */,
+				003 /* STTProvider.swift in Sources */,
+				004 /* AppSettings.swift in Sources */,
+				005 /* AudioRecorder.swift in Sources */,
+				006 /* HotkeyManager.swift in Sources */,
+				007 /* STTServiceProtocol.swift in Sources */,
+				008 /* OpenAIWhisperService.swift in Sources */,
+				009 /* LocalWhisperService.swift in Sources */,
+				010 /* DeepgramService.swift in Sources */,
+				011 /* AssemblyAIService.swift in Sources */,
+				012 /* CustomSTTService.swift in Sources */,
+				013 /* LLMService.swift in Sources */,
+				014 /* ClipboardManager.swift in Sources */,
+				015 /* RecordingManager.swift in Sources */,
+				016 /* MainView.swift in Sources */,
+				020 /* MenuBarView.swift in Sources */,
+				021 /* RecordingWidgetView.swift in Sources */,
+				023 /* RecordingWidgetWindow.swift in Sources */,
+				025 /* SoundManager.swift in Sources */,
+				026 /* AliyunASRService.swift in Sources */,
+				027 /* RecordingStatistics.swift in Sources */,
+				028 /* HomeView.swift in Sources */,
+				017 /* HistoryContentView.swift in Sources */,
+				018 /* HomeHeroView.swift in Sources */,
+				031 /* SettingsWindowView.swift in Sources */,
+				032 /* AccountDetailsView.swift in Sources */,
+				033 /* GeneralSettingsView.swift in Sources */,
+				034 /* AboutView.swift in Sources */,
+				035 /* APITester.swift in Sources */,
+				036 /* RealtimeAudioCapture.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		700 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		701 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		702 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sparkle/Sparkle.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Sparkle/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Sparkle needs microphone access to record your voice for transcription.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vbcode.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		703 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sparkle/Sparkle.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Sparkle/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Sparkle needs microphone access to record your voice for transcription.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vbcode.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		500 /* Build configuration list for PBXNativeTarget "Sparkle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				702 /* Debug */,
+				703 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		601 /* Build configuration list for PBXProject "Sparkle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				700 /* Debug */,
+				701 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 600 /* Project object */;
+}
