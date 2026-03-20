@@ -37,15 +37,10 @@ struct AboutView: View {
                     .foregroundStyle(.secondary)
             }
 
-            // Description
-            Text("Voice to Text Tool")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
             Spacer()
 
             // Copyright
-            Text("Copyright 2024-2025. All rights reserved.")
+            Text("Copyright 2026. All rights reserved.")
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
                 .padding(.bottom, 20)

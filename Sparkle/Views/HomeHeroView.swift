@@ -32,8 +32,8 @@ struct HomeHeroView: View {
             VStack(spacing: 20) {
                 heroCard
                 quickActions
-                hotkeyHints
                 statsSection
+                hotkeyHints
                 Spacer(minLength: 12)
             }
             .padding(.horizontal, 24)

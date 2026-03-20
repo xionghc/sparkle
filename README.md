@@ -1,71 +1,25 @@
-# Sparkle - Voice-to-Text macOS Application
+# Sparkle
 
-A macOS application for audio recording with STT (Speech-to-Text) transcription and LLM-powered text polishing. Features hotkey-based recording controls and automatic clipboard integration.
+Speak, get polished text in real time.
 
-## Requirements
-
-- macOS 15.0+
-- Xcode 15+
-
-## Project Structure
-
-```
-Sparkle/
-├── Sparkle.xcodeproj/
-├── Sparkle/
-│   ├── SparkleApp.swift                # Main app entry with scenes
-│   ├── Info.plist                      # App configuration
-│   ├── Sparkle.entitlements            # App permissions
-│   ├── Models/
-│   │   ├── Recording.swift             # SwiftData model
-│   │   ├── STTProvider.swift           # STT provider enum
-│   │   └── AppSettings.swift           # User settings
-│   ├── Views/
-│   │   ├── MainView.swift              # Main window
-│   │   ├── HistoryView.swift           # Recording history sidebar
-│   │   ├── TranscriptEditorView.swift  # Transcript viewer/editor
-│   │   ├── SettingsView.swift          # Settings configuration
-│   │   ├── MenuBarView.swift           # Menu bar content
-│   │   └── RecordingWidget/
-│   │       ├── RecordingWidgetView.swift
-│   │       ├── WaveformView.swift
-│   │       └── RecordingWidgetWindow.swift
-│   ├── Services/
-│   │   ├── AudioRecorder.swift         # AVFoundation recording
-│   │   ├── HotkeyManager.swift         # Global fn key monitoring
-│   │   ├── LLMService.swift            # LLM text polishing
-│   │   └── STT/
-│   │       ├── STTServiceProtocol.swift
-│   │       ├── OpenAIWhisperService.swift
-│   │       ├── LocalWhisperService.swift
-│   │       ├── DeepgramService.swift
-│   │       ├── AssemblyAIService.swift
-│   │       └── CustomSTTService.swift
-│   ├── Managers/
-│   │   ├── RecordingManager.swift      # Recording flow orchestration
-│   │   └── ClipboardManager.swift      # Auto-paste functionality
-│   └── Resources/
-│       └── Assets.xcassets
-```
+![Sparkle Screenshot](assets/screenshot.png)
 
 ## Features
 
 ### Audio Recording
-- AVAudioRecorder-based recording with real-time waveform visualization
-- M4A audio format with high quality encoding
+- Real-time waveform visualization while recording
+- High-quality M4A audio
 
 ### Multiple STT Providers
 - **OpenAI Whisper** - OpenAI's Whisper API
 - **Deepgram** - Deepgram speech recognition API
 - **AssemblyAI** - AssemblyAI transcription service
 - **Custom API** - Any OpenAI-compatible endpoint
-- **Local Whisper** - Placeholder for WhisperKit integration
 
 ### LLM Text Polishing
-- OpenAI-compatible API integration
-- Customizable system prompt for text formatting
-- Automatic grammar and punctuation fixes
-- Removes filler words and repetitions
+- Polishes raw transcript using any OpenAI-compatible LLM
+- Customizable system prompt
+- Fixes grammar, punctuation, filler words, and repetitions
 
 ### Hotkey Controls
 | Action | Trigger | Result |
@@ -76,15 +30,14 @@ Sparkle/
 | Hands-free Stop | Press `fn` again | Complete recording |
 
 ### Menu Bar Integration
-- Quick access via MenuBarExtra
+- Lives in the menu bar for quick access
 - Recording status indicator with pulse animation
-- Start/stop recording from menu
+- Start/stop recording from the menu
 
 ### Recording History
-- SwiftData persistence
-- Search through recordings
-- View original transcript and polished text
-- Re-polish recordings with updated prompts
+- Browse and search past recordings
+- View original transcript and polished text side by side
+- Re-polish recordings with a different prompt
 
 ### Auto-Paste
 - Copies result to clipboard
@@ -141,17 +94,3 @@ open ./build/Debug/Sparkle.app
    - Text is automatically copied to clipboard
    - If auto-paste is enabled, text is pasted at cursor
    - View history in the main window
-
-## Permissions Required
-
-- **Microphone Access**: For audio recording
-- **Accessibility** (optional): For global hotkey monitoring
-- **Network Access**: For API calls to STT/LLM services
-
-## Tech Stack
-
-- **Framework**: SwiftUI
-- **Audio**: AVFoundation
-- **Storage**: SwiftData
-- **Networking**: URLSession
-- **UI**: Menu Bar Extra, Floating Windows

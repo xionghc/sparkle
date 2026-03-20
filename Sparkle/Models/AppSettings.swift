@@ -89,11 +89,15 @@ final class AppSettings {
         }
     }
 
+    var effectiveSTTAPIURL: String {
+        sttProvider == .custom ? sttAPIURL : sttProvider.defaultURL
+    }
+
     var isSTTConfigured: Bool {
         if sttProvider == .localWhisper {
             return !localWhisperModelPath.isEmpty
         }
-        return !sttAPIURL.isEmpty && !sttAPIKey.isEmpty
+        return !effectiveSTTAPIURL.isEmpty && !sttAPIKey.isEmpty
     }
 
     var isLLMConfigured: Bool {

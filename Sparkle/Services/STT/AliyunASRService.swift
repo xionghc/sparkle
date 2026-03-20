@@ -260,7 +260,7 @@ private class WebSocketTranscriptionSession: NSObject, URLSessionWebSocketDelega
         var offset = 0
 
         // Use a dedicated serial queue for chunk scheduling
-        let chunkQueue = DispatchQueue(label: "com.vbcode.audio-chunks")
+        let chunkQueue = DispatchQueue(label: "com.sparkle.audio-chunks")
 
         func sendNextChunk() {
             guard !isCompleted, offset < audioData.count else {

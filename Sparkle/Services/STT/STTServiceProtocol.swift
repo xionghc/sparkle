@@ -65,7 +65,7 @@ struct STTServiceFactory {
     static func createService(for provider: STTProvider, settings: AppSettings) -> STTServiceProtocol {
         switch provider {
         case .openAIWhisper:
-            return OpenAIWhisperService(apiURL: settings.sttAPIURL, apiKey: settings.sttAPIKey)
+            return OpenAIWhisperService(apiURL: provider.defaultURL, apiKey: settings.sttAPIKey)
         case .localWhisper:
             return LocalWhisperService(modelPath: settings.localWhisperModelPath)
         case .deepgram:

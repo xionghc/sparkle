@@ -63,8 +63,15 @@ struct GeneralSettingsView: View {
             }
 
             if settings.sttProvider != .localWhisper {
-                TextField("API URL", text: $settings.sttAPIURL)
-                    .textFieldStyle(.roundedBorder)
+                if settings.sttProvider == .custom {
+                    TextField("API URL", text: $settings.sttAPIURL)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    TextField("API URL", text: .constant(settings.sttProvider.defaultURL))
+                        .textFieldStyle(.roundedBorder)
+                        .foregroundStyle(.secondary)
+                        .disabled(true)
+                }
 
                 SecureField("API Key", text: $settings.sttAPIKey)
                     .textFieldStyle(.roundedBorder)
@@ -351,7 +358,7 @@ struct GeneralSettingsView: View {
             do {
                 let result = try await APITester.testSTT(
                     provider: settings.sttProvider,
-                    apiURL: settings.sttAPIURL,
+                    apiURL: settings.effectiveSTTAPIURL,
                     apiKey: settings.sttAPIKey
                 )
                 await MainActor.run {
