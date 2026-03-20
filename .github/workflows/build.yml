@@ -1,0 +1,62 @@
+name: Build DMG
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
+            -project Sparkle.xcodeproj \
+            -scheme Sparkle \
+            -configuration Release \
+            -destination "generic/platform=macOS" \
+            -archivePath "${{ runner.temp }}/Sparkle.xcarchive" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Export App
+        run: |
+          # Extract .app bundle from the archive
+          cp -R \
+            "${{ runner.temp }}/Sparkle.xcarchive/Products/Applications/Sparkle.app" \
+            "${{ runner.temp }}/Sparkle.app"
+
+      - name: Create DMG
+        run: |
+          # Install create-dmg for a polished DMG with Applications shortcut
+          brew install create-dmg
+
+          create-dmg \
+            --volname "Sparkle" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "Sparkle.app" 175 190 \
+            --hide-extension "Sparkle.app" \
+            --app-drop-link 425 190 \
+            "${{ runner.temp }}/Sparkle.dmg" \
+            "${{ runner.temp }}/Sparkle.app"
+
+      - name: Upload DMG Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sparkle-dmg
+          path: ${{ runner.temp }}/Sparkle.dmg
+          retention-days: 30
